@@ -54,4 +54,4 @@ def webhook2():
             return jsonify({"error": str(e)}), 400
 
 if __name__ == '__main__':
-    app.run(debug=True, port=os.getenv("PORT", default=5000))
+    app.run(debug=True, port=os.getenv("PORT", default=8080))
