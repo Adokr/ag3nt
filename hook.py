@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import re
 import requests
+import os
 
 app = Flask(__name__)
 
@@ -53,4 +54,4 @@ def webhook2():
             return jsonify({"error": str(e)}), 400
 
 if __name__ == '__main__':
-    print(app.run(host="0.0.0.0", port=8000))
+    app.run(debug=True, port=os.getenv("PORT", default=5000))
