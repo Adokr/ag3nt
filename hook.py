@@ -47,7 +47,7 @@ def webhook2():
                         if szukana_uczelnia == uczelnia:
                             matched.append({"imie": item.get("imie", ""), "nazwisko": item.get("nazwisko", "")})
                 print(matched)
-                    return jsonify(matched)
+                return jsonify(matched)
 
         except Exception as e:
             return jsonify({"error": str(e)}), 400
