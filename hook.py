@@ -27,5 +27,29 @@ def webhook():
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
+@app.route('/webhook2', methods=['POST'])
+def webhook2():
+    try:
+        res = request.get_json()
+
+        if "input" in res:
+            return jsonify({"output": res["input"]}), 200
+        
+        osoby = request.get_json("https://letsplay.ag3nts.org/data/osoby.json")
+        
+        matched = []
+        if isinstance(osoby, list):
+            for item in osoby:
+                nazwa = item.get("nazwa", "")
+                if isinstance(nazwa, str) and re.search(r"(czas[a-z]{0,2})", nazwa.lower()) and re.search(r"(podróż[a-z]{0,4})", nazwa.lower()):
+                    matched.append(item.get("uczelnia", ""))
+                    matched.append(item.get("sponsor", ""))
+
+        return jsonify({"uczelnia": matched[0],
+                        "sponsor": matched[1]})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8000)
