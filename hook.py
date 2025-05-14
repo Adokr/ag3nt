@@ -9,7 +9,7 @@ def webhook():
         res = request.get_json()
 
         if "input" in res:
-            return jsonify({"output": res["input"]})
+            return jsonify({"output": res["input"]}), 200
         
         badania = request.get_json("https://letsplay.ag3nts.org/data/badania.json")
         
