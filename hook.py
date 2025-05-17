@@ -56,7 +56,7 @@ def webhook2():
                 for item in uczelnie:
                     id_uczelni = item.get("id", "")
                     if id_uczelni == szukana_uczelnia:
-                        matched.append({"uczelnia": item.get("nazwa")})
+                        matched.append({"uczelnia": item.get("nazwa", "")})
             print(matched)
             return jsonify(matched)
 
