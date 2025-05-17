@@ -8,7 +8,7 @@ app = Flask(__name__)
 @app.route('/webhook', methods=['POST'])
 def webhook():
     res = request.get_json(silent=True)
-    if res and "input" in res and re.match(r"test", res["input"]):
+    if res and "input" in res and isinstance(res["input"], str) and re.match(r"test", res["input"]):
         return jsonify({"output": res["input"]}), 200
     
     elif res and "input" in res and res["input"].isupper():
@@ -50,7 +50,7 @@ def webhook():
 @app.route('/webhook2', methods=['POST'])
 def webhook2():
     res = request.get_json(silent=True)
-    if res and "input" in res and re.match(r"test", res["input"]):
+    if res and "input" in res and isinstance(res["input"], str) and re.match(r"test", res["input"]):
         return jsonify({"output": res["input"]}), 200
     
     else: 
