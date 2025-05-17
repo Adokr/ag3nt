@@ -15,16 +15,16 @@ def webhook():
             res = requests.get("https://letsplay.ag3nts.org/data/badania.json")
             res.raise_for_status()
             badania = res.json()
-            matched = []
+            matched = {}
             if isinstance(badania, list):
                 for item in badania:
                     nazwa = item.get("nazwa", "")
                     if isinstance(nazwa, str) and re.search(r"(czas[a-z]{0,2})", nazwa.lower()) and re.search(r"(podróż[a-z]{0,4})", nazwa.lower()):
-                        matched.append(item.get("uczelnia", ""))
-                        matched.append(item.get("sponsor", ""))
+                        matched["uczelnia"] = item.get("uczelnia", "")
+                        matched["sponso"] = item.get("sponsor", "")
+
             print(matched)
-            return jsonify({"output": matched[0],
-                                "output1": matched[1]})
+            return jsonify({"output": matched})
 
         except Exception as e:
             return jsonify({"error": str(e)}), 400
