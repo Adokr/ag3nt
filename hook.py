@@ -20,11 +20,11 @@ def webhook():
                 for item in badania:
                     nazwa = item.get("nazwa", "")
                     if isinstance(nazwa, str) and re.search(r"(czas[a-z]{0,2})", nazwa.lower()) and re.search(r"(podróż[a-z]{0,4})", nazwa.lower()):
-                        matched["uczelnia"] = item.get("uczelnia", "")
-                        matched["sponsor"] = item.get("sponsor", "")
+                        matched.append(item.get("uczelnia", ""))
+                        matched.append(item.get("sponsor", ""))
 
             print(matched)
-            return jsonify({"output": [matched]})
+            return jsonify({"output": matched})
 
         except Exception as e:
             return jsonify({"error": str(e)}), 400
