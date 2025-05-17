@@ -24,7 +24,7 @@ def webhook():
                         matched.append(item.get("sponsor", ""))
 
             print(matched)
-            return jsonify({"output": matched})
+            return matched
 
         except Exception as e:
             return jsonify({"error": str(e)}), 400
