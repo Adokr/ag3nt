@@ -8,23 +8,25 @@ app = Flask(__name__)
 @app.route('/webhook', methods=['POST'])
 def webhook():
     res = request.get_json(silent=True)
-    if res and "input" in res:
+    if res and "input" in res and re.match(r"test", res["input"]):
         return jsonify({"output": res["input"]}), 200
     else:
         try:
             res = requests.get("https://letsplay.ag3nts.org/data/badania.json")
             res.raise_for_status()
             badania = res.json()
-            matched = []
+            matched = {}
             if isinstance(badania, list):
                 for item in badania:
                     nazwa = item.get("nazwa", "")
                     if isinstance(nazwa, str) and re.search(r"(czas[a-z]{0,2})", nazwa.lower()) and re.search(r"(podróż[a-z]{0,4})", nazwa.lower()):
-                        matched.append(item.get("uczelnia", ""))
-                        matched.append(item.get("sponsor", ""))
+                        #matched.append(item.get("uczelnia", ""))
+                        #atched.append(item.get("sponsor", ""))
+                        matched["uczelnia"] = item.get("uczelnia", "")
+                        matched["sponsor"] = item.get("sponsor", "")
 
             print(matched)
-            return matched
+            return jsonify({"output": matched})
 
         except Exception as e:
             return jsonify({"error": str(e)}), 400
