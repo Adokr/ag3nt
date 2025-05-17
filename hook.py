@@ -46,21 +46,24 @@ def webhook2():
             res3 = requests.get("https://letsplay.ag3nts.org/data/uczelnie.json")
             uczelnie = res3.json()
 
-            matched = []
+            matched = {}
+            count = 1
             if isinstance(osoby, list):
                 for item in osoby:
                     uczelnia = item.get("uczelnia", "")
                     if szukana_uczelnia == uczelnia:
-                        matched.append({"imie": item.get("imie", ""), "nazwisko": item.get("nazwisko", "")})
+                        matched[f"imie{count}"] = item.get("imie", "")
+                        matched[f"nazwisko{count}"] = item.get("nazwisko", "")
+                        count += 1
            
 
             if isinstance(uczelnie, list):
                 for item in uczelnie:
                     id_uczelni = item.get("id", "")
                     if id_uczelni == szukana_uczelnia:
-                        matched.append({"uczelnia": item.get("nazwa", "")})
+                        matched["uczelnia"]= item.get("nazwa", "")
             print(matched)
-            return jsonify(matched)
+            return jsonify({"output": matched})
 
         except Exception as e:
             return jsonify({"error": str(e)}), 400
