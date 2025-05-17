@@ -32,23 +32,33 @@ def webhook():
 @app.route('/webhook2', methods=['POST'])
 def webhook2():
     res = request.get_json(silent=True)
-    if res and "input" in res:
+    if res and "input" in res and re.match(r"test", res["input"]):
         return jsonify({"output": res["input"]}), 200
     
     else: 
         try:
-            if res["params"] != "":
-                szukana_uczelnia = res["params"]
-                res2 = requests.get("https://letsplay.ag3nts.org/data/osoby.json")
-                osoby = res2.json()
-                matched = []
-                if isinstance(osoby, list):
-                    for item in osoby:
-                        uczelnia = item.get("uczelnia", "")
-                        if szukana_uczelnia == uczelnia:
-                            matched.append({"imie": item.get("imie", ""), "nazwisko": item.get("nazwisko", "")})
-                print(matched)
-                return jsonify(matched)
+            szukana_uczelnia = res["input"]
+            res2 = requests.get("https://letsplay.ag3nts.org/data/osoby.json")
+            osoby = res2.json()
+
+            res3 = requests.get("https://letsplay.ag3nts.org/data/uczelnie.json")
+            uczelnie = res3.json()
+
+            matched = []
+            if isinstance(osoby, list):
+                for item in osoby:
+                    uczelnia = item.get("uczelnia", "")
+                    if szukana_uczelnia == uczelnia:
+                        matched.append({"imie": item.get("imie", ""), "nazwisko": item.get("nazwisko", "")})
+           
+
+            if isinstance(uczelnie, list):
+                for item in uczelnie:
+                    id_uczelni = item.get("id", "")
+                    if id_uczelni == szukana_uczelnia:
+                        matched.append({"uczelnia": item.get("nazwa")})
+            print(matched)
+            return jsonify(matched)
 
         except Exception as e:
             return jsonify({"error": str(e)}), 400
