@@ -24,7 +24,7 @@ def webhook():
                     matched["sponsor"] = item.get("sponsor", "")
                     break
         print(matched)
-        return jsonify({"output": [matched]})
+        return jsonify({"output": matched})
     else:
         try:
             res = requests.get("https://letsplay.ag3nts.org/data/badania.json")
@@ -42,7 +42,7 @@ def webhook():
                         break
 
             print(matched)
-            return jsonify({"output": [matched]})
+            return jsonify({"output": matched})
 
         except Exception as e:
             return jsonify({"error": str(e)}), 400
@@ -80,7 +80,7 @@ def webhook2():
                         matched["uczelnia"]= item.get("nazwa", "")
                         break
             print(matched)
-            return jsonify({"output": [matched]})
+            return jsonify({"output": matched})
 
         except Exception as e:
             return jsonify({"error": str(e)}), 400
