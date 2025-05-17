@@ -21,7 +21,7 @@ def webhook():
                     nazwa = item.get("nazwa", "")
                     if isinstance(nazwa, str) and re.search(r"(czas[a-z]{0,2})", nazwa.lower()) and re.search(r"(podróż[a-z]{0,4})", nazwa.lower()):
                         matched["uczelnia"] = item.get("uczelnia", "")
-                        matched["sponso"] = item.get("sponsor", "")
+                        matched["sponsor"] = item.get("sponsor", "")
 
             print(matched)
             return jsonify({"output": matched})
