@@ -10,6 +10,21 @@ def webhook():
     res = request.get_json(silent=True)
     if res and "input" in res and re.match(r"test", res["input"]):
         return jsonify({"output": res["input"]}), 200
+    
+    elif res and "input" in res and res["input"].isupper():
+        szukana_uczelnia = res["input"]
+        res = requests.get("https://letsplay.ag3nts.org/data/badania.json")
+        res.raise_for_status()
+        badania = res.json()
+        matched = {}
+        if isinstance(badania, list):
+            for item in badania:
+                uczelnia = item.get("uczelnia", "")
+                if uczelnia == szukana_uczelnia:
+                    matched["sponsor"] = item.get("sponsor", "")
+                    break
+        print(matched)
+        return jsonify({"output": matched})
     else:
         try:
             res = requests.get("https://letsplay.ag3nts.org/data/badania.json")
@@ -24,6 +39,7 @@ def webhook():
                         #atched.append(item.get("sponsor", ""))
                         matched["uczelnia"] = item.get("uczelnia", "")
                         matched["sponsor"] = item.get("sponsor", "")
+                        break
 
             print(matched)
             return jsonify({"output": matched})
@@ -62,6 +78,7 @@ def webhook2():
                     id_uczelni = item.get("id", "")
                     if id_uczelni == szukana_uczelnia:
                         matched["uczelnia"]= item.get("nazwa", "")
+                        break
             print(matched)
             return jsonify({"output": matched})
 
