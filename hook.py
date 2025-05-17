@@ -40,7 +40,7 @@ def webhook2():
             szukana_uczelnia = res["input"]
             res2 = requests.get("https://letsplay.ag3nts.org/data/osoby.json")
             osoby = res2.json()
-
+            print("LOL")
             res3 = requests.get("https://letsplay.ag3nts.org/data/uczelnie.json")
             uczelnie = res3.json()
 
