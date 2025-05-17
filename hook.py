@@ -23,8 +23,8 @@ def webhook():
                         matched.append(item.get("uczelnia", ""))
                         matched.append(item.get("sponsor", ""))
             print(matched)
-            return jsonify({"uczelnia": matched[0],
-                                "sponsor": matched[1]})
+            return jsonify({"output": matched[0],
+                                "output1": matched[1]})
 
         except Exception as e:
             return jsonify({"error": str(e)}), 400
