@@ -11,7 +11,7 @@ def webhook():
     if res and "input" in res and isinstance(res["input"], str) and re.match(r"test", res["input"]):
         return jsonify({"output": res["input"]}), 200
     
-    elif res and "input" in res and res["input"].isupper():
+    elif res and "input" in res and  isinstance(res["input"], str) and res["input"].isupper():
         szukana_uczelnia = res["input"]
         res = requests.get("https://letsplay.ag3nts.org/data/badania.json")
         res.raise_for_status()
