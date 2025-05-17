@@ -15,7 +15,7 @@ def webhook():
             res = requests.get("https://letsplay.ag3nts.org/data/badania.json")
             res.raise_for_status()
             badania = res.json()
-            matched = {}
+            matched = []
             if isinstance(badania, list):
                 for item in badania:
                     nazwa = item.get("nazwa", "")
